@@ -14,7 +14,8 @@ def clear():
 
 comandos = {
     "/CRIAR": "Cria uma nova sala.",
-    "/SAIR": "Encerrar a aplicação."
+    "/SAIR": "Encerrar a aplicação.",
+    "/LISTAR": "Lista participantes"
 }
 
 def menu():
@@ -34,7 +35,13 @@ while option not in comandos:
 if option == "/SAIR":
     print('\nEncerrando aplicação...')
     exit(0)
-elif option == "/CRIAR":
+if option == "/LISTAR":
+    print("listar participantes")
+if option == "/CRIAR":
+    print('\nInsira um número de 1234 a 9999 para criar uma sala')
+    numstr = input()
+    numint = int(numstr)
+    PORT = numint
     print('\nCriando sala...')
 
 # Cria um socket com conexão TCP
@@ -55,19 +62,7 @@ sockets_list = [server_socket]
 clients = {}
 
 print(f'Esperando conexões em {IP}:{PORT}...')
-print('Para criar uma nova sala tecle 1')
-print('Para listar os participantes de uma sala tecle 2')
 
-
-# Ver como executar esse comando em loop
-comandos = input()
-if comandos == '1':
-    print("insira aqui um número para uma sala")
-    num = input()
-    PORT = num
-    print(f'Mudando para sala {IP}:{PORT}...')
-if comandos == '2':
-    print(clients)
 # Lidando com o recebimento de mensagem
 def receive_message(client_socket):
 
