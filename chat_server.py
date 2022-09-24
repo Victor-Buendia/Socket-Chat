@@ -24,7 +24,19 @@ sockets_list = [server_socket]
 clients = {}
 
 print(f'Esperando conexões em {IP}:{PORT}...')
+print('Para criar uma nova sala tecle 1')
+print('Para listar os participantes de uma sala tecle 2')
 
+
+# Ver como executar esse comando em loop
+comandos = input()
+if comandos == '1':
+    print("insira aqui um número para uma sala")
+    num = input()
+    PORT = num
+    print(f'Mudando para sala {IP}:{PORT}...')
+if comandos == '2':
+    print(clients)
 # Lidando com o recebimento de mensagem
 def receive_message(client_socket):
 
@@ -50,7 +62,6 @@ def receive_message(client_socket):
         return False
 
 while True:
-
     read_sockets, _, exception_sockets = select.select(sockets_list, [], sockets_list)
 
     # Iterar nos sockets notificados

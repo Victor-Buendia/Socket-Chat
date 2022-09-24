@@ -75,7 +75,10 @@ while True:
             # Espera o usuário mandar uma mensagem
             threading.Thread(target=limparBuffer(my_username)).start()
             message = input()
-
+            # Se o usuário escrever sair ele sai do chat
+            if message == 'sair':
+                print("saindo...")
+                sys.exit()
             # Se a mensagem não estiver vazia, mande ela
             if message:
                 # Codifica a mensagem para bytes, prepara o header e converte para bytes, como o username acima, e depois mandar
