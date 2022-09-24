@@ -1,10 +1,41 @@
 import socket
 import select
+import os
+import time
 
 HEADER_LENGTH = 10
 
 IP = "127.0.0.1"
 PORT = 1234
+
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    
+
+comandos = {
+    "/CRIAR": "Cria uma nova sala.",
+    "/SAIR": "Encerrar a aplicação."
+}
+
+def menu():
+    clear()
+    print('============ MENU ============')
+    for comando in comandos:
+        print(f'{comando} -----> {comandos[comando]}')
+    option = input('Digite um comando: ')
+    return option
+
+option = menu()
+while option not in comandos:
+    print('\nComando Inválido!')
+    time.sleep(1)
+    option = menu()
+
+if option == "/SAIR":
+    print('\nEncerrando aplicação...')
+    exit(0)
+elif option == "/CRIAR":
+    print('\nCriando sala...')
 
 # Cria um socket com conexão TCP
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
