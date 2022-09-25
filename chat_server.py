@@ -13,6 +13,7 @@ PORT = 1234
 comandos = {
     "/CRIAR": "Cria uma nova sala.",
     "/LISTAR": "Listar salas criadas.",
+    "/PARTICIPANTES": "Listar participantes de uma determinada sala.",
     "/ENCERRAR": "Encerrar uma sala.",
     "/SAIR": "Encerrar a aplicação.",
     "/LOGS": "Exibir logs"
@@ -54,12 +55,15 @@ def add_user_to_room(room_name, user):
             user['room'] = room_selected
             clients[user['socket']] = user
 
-            notify_user_join_room(username_join=user['username'], room=room_selected)
-            log_message(f'{user["username"]} entrou na sala {room_selected["name"]}.')
+            notify_user_join_room(
+                username_join=user['username'], room=room_selected)
+            log_message(
+                f'{user["username"]} entrou na sala {room_selected["name"]}.')
 
             return room_selected
         else:
-            log_message(f'{user["username"]} tentou entrar na sala \'{room_selected["name"]}\', mas seu limite de participantes já foi atingido.')
+            log_message(
+                f'{user["username"]} tentou entrar na sala \'{room_selected["name"]}\', mas seu limite de participantes já foi atingido.')
             data = {'username': 'Sistema', 'message': '501'}
             encoded_data = json.dumps(data).encode('utf-8')
             user['socket'].send(encoded_data)
@@ -83,6 +87,7 @@ def check_sockets_list():
         if checking_socket.fileno() == -1:
             sockets_list.remove(checking_socket)
 
+
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -94,7 +99,8 @@ def create_room():
         room_name = input('Digite o nome da sala: ')
         room_limit = input('Digite o limite da sala: ')
         room_id = (rooms[len(rooms) - 1]['id'] + 1) if (len(rooms) > 0) else 1
-        rooms.append({'id': room_id, 'name': room_name, 'limit': int(room_limit), 'users': []})
+        rooms.append({'id': room_id, 'name': room_name,
+                     'limit': int(room_limit), 'users': []})
     except ValueError as e:
         print('\nInsira dados válidos.')
         time.sleep(3)
@@ -103,7 +109,8 @@ def create_room():
 
     clear()
     print(f'Sala {room_name} criada.')
-    log_message(f'Sala {room_name} criada. Atualmente, existem {len(rooms)} salas criadas.')
+    log_message(
+        f'Sala {room_name} criada. Atualmente, existem {len(rooms)} salas criadas.')
 
 
 def delete_room():
@@ -126,6 +133,7 @@ def delete_room():
     else:
         print('Sala não encontrada.')
 
+
 def init():
     threading.Thread(target=manage_sockets).start()
     log_message(f'Esperando conexões em {IP}:{PORT}...')
@@ -147,6 +155,11 @@ def init():
 
             case '/ENCERRAR':
                 delete_room()
+
+            case '/PARTICIPANTES':
+                show_users_in_room()
+                input('Pressione uma tecla para continuar...')
+                print('\n\n')
 
             case '/SAIR':
                 print('\nEncerrando aplicação...')
@@ -205,7 +218,8 @@ def receive_message(client_socket):
 def manage_sockets():
     while True:
         check_sockets_list()
-        read_sockets, _, exception_sockets = select.select(sockets_list, [], sockets_list)
+        read_sockets, _, exception_sockets = select.select(
+            sockets_list, [], sockets_list)
 
         # Iterar nos sockets notificados
         for notified_socket in read_sockets:
@@ -232,7 +246,8 @@ def manage_sockets():
                 username = data['username']
                 room = data['room']
 
-                add_user_to_room(room_name=room, user={'socket': client_socket, 'username': username})
+                add_user_to_room(room_name=room, user={
+                                 'socket': client_socket, 'username': username})
 
             # Else, socket já existente está enviando uma mensagem
             else:
@@ -264,7 +279,8 @@ def notify_user_join_room(username_join, room):
 
 def remove_users_from_room(room):
     for user in room['users']:
-        data = {'username': 'Sistema', 'message': '*** ESTA SALA FOI ENCERRADA ***'}
+        data = {'username': 'Sistema',
+                'message': '*** ESTA SALA FOI ENCERRADA ***'}
         encoded_data = json.dumps(data).encode('utf-8')
         user['socket'].send(encoded_data)
 
@@ -277,7 +293,8 @@ def remove_socket(socket_closed):
     room_user_left = user_left['room']
     room_user_left['users'].remove(user_left)
 
-    notify_user_left_room(username_left=user_left['username'], room=room_user_left)
+    notify_user_left_room(
+        username_left=user_left['username'], room=room_user_left)
 
     del clients[socket_closed]
     sockets_list.remove(socket_closed)
@@ -297,14 +314,16 @@ def send_message(socket):
     sender_user = clients[socket]
     username = sender_user['username']
 
-    log_message(f'{username} [{sender_user["room"]["name"]}]: {message["data"].decode("utf-8")}')
+    log_message(
+        f'{username} [{sender_user["room"]["name"]}]: {message["data"].decode("utf-8")}')
 
     # Iterar sobre os clientes conectados e a mensagem broadcast
     for user in sender_user['room']['users']:
 
         # Não enviar para quem enviou
         if user['socket'] != socket:
-            data = {'username': username, 'message': message['data'].decode('utf-8')}
+            data = {'username': username,
+                    'message': message['data'].decode('utf-8')}
             encoded_data = json.dumps(data).encode('utf-8')
 
             # Enviar usuário e mensagem com seus headers
@@ -327,7 +346,33 @@ def show_rooms():
     clear()
     print('****** SALAS ******')
     for room in rooms:
-        print(f'{room["id"]}: {room["name"]} - {len(room["users"])}/{room["limit"]} usuários conectados.')
+        print(
+            f'{room["id"]}: {room["name"]} - {len(room["users"])}/{room["limit"]} usuários conectados.')
+
+
+def show_users_in_room():
+    clear()
+    room_selected = None
+    show_rooms()
+    room_name = input(
+        '\nDigite o nome da sala que deseja ver os participantes: ')
+    for room in rooms:
+        if room['name'] == room_name:
+            room_selected = room
+
+    users_in_room = len(room["users"])
+
+    if room_selected is not None:
+        print(f'****** PARTICIPANTES DA SALA "{room_name}" ******')
+        for i in range(users_in_room):
+            print(f'\n{room_selected[i]["users"]}.')
+    else:
+        print('\nSala não encontrada. Digite outra sala.')
+        time.sleep(3)
+        clear()
+        show_users_in_room()
+        # raise Exception('Sala não encontrada.')
+
 
 # Iniciar o programa
 try:
