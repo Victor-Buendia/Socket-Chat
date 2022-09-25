@@ -70,6 +70,18 @@ def init():
             if reader is client_socket:
                 try:
                     message = decode_message(receiver=client_socket)
+                    if message["username"] == 'Sistema':
+                        match message["message"]:
+                            case '404':
+                                print('\n\nA sala escolhida não existe. Tente novamente.')
+                                time.sleep(3)
+                                clear()
+                                init()
+                            case '501':
+                                print('\n\nO limite da sala escolhida foi atingido. Escolha outra sala.')
+                                time.sleep(3)
+                                clear()
+                                init()
                     sys.stdout.flush()
                     print('\033[A \033[A')
                     print(f'\n{message["username"]} > {message["message"]}')
@@ -95,7 +107,7 @@ def init():
                     print('\n\nO programa foi finalizado abruptamente.')
                     os._exit(1)
 
-                if message == "/SAIR":
+                if message.upper() == "/SAIR":
                     print('Saindo da sala...')
                     client_socket.shutdown(socket.SHUT_RDWR)
                     client_socket.close()

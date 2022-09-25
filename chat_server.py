@@ -59,9 +59,23 @@ def add_user_to_room(room_name, user):
 
             return room_selected
         else:
-            raise Exception('Limite da sala atingido.')
+            log_message(f'{user["username"]} tentou entrar na sala \'{room_selected["name"]}\', mas seu limite de participantes já foi atingido.')
+            data = {'username': 'Sistema', 'message': '501'}
+            encoded_data = json.dumps(data).encode('utf-8')
+            user['socket'].send(encoded_data)
+
+            user['socket'].shutdown(socket.SHUT_RDWR)
+            user['socket'].close()
+            # raise Exception('Limite da sala atingido.')
     else:
-        raise Exception('Sala não encontrada.')
+        log_message(f'{user["username"]} tentou entrar em sala inexistente.')
+        data = {'username': 'Sistema', 'message': '404'}
+        encoded_data = json.dumps(data).encode('utf-8')
+        user['socket'].send(encoded_data)
+
+        user['socket'].shutdown(socket.SHUT_RDWR)
+        user['socket'].close()
+        # raise Exception('Sala não encontrada.')
 
 
 def check_sockets_list():
@@ -76,10 +90,16 @@ def clear():
 def create_room():
     print('\nCriando sala...')
 
-    room_name = input('Digite o nome da sala: ')
-    room_limit = input('Digite o limite da sala: ')
-    room_id = (rooms[len(rooms) - 1]['id'] + 1) if (len(rooms) > 0) else 1
-    rooms.append({'id': room_id, 'name': room_name, 'limit': int(room_limit), 'users': []})
+    try:
+        room_name = input('Digite o nome da sala: ')
+        room_limit = input('Digite o limite da sala: ')
+        room_id = (rooms[len(rooms) - 1]['id'] + 1) if (len(rooms) > 0) else 1
+        rooms.append({'id': room_id, 'name': room_name, 'limit': int(room_limit), 'users': []})
+    except ValueError as e:
+        print('\nInsira dados válidos.')
+        time.sleep(3)
+        clear()
+        create_room()
 
     clear()
     print(f'Sala {room_name} criada.')
@@ -142,7 +162,7 @@ def init():
 
 
 def menu():
-    print('============ MENU ============')
+    print('================== MENU ==================')
     for comando in comandos:
         print(f'{comando} -----> {comandos[comando]}')
     try:
@@ -307,7 +327,7 @@ def show_rooms():
     clear()
     print('****** SALAS ******')
     for room in rooms:
-        print(f'{room["id"]}: {room["name"]} - {len(room["users"])} usuários conectados.')
+        print(f'{room["id"]}: {room["name"]} - {len(room["users"])}/{room["limit"]} usuários conectados.')
 
 # Iniciar o programa
 try:
