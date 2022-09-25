@@ -363,9 +363,13 @@ def show_users_in_room():
     users_in_room = len(room["users"])
 
     if room_selected is not None:
+        clear()
         print(f'****** PARTICIPANTES DA SALA "{room_name}" ******')
-        for i in range(users_in_room):
-            print(f'\n{room_selected[i]["users"]}.')
+        i = 1
+        print('')
+        for user in room_selected["users"]:
+            print(f'{i} - {user["username"]}')
+            i+=1
     else:
         print('\nSala não encontrada. Digite outra sala.')
         time.sleep(3)
