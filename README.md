@@ -1,4 +1,5 @@
-# Fundamento de Redes e Computadores
+# Fundamento de Redes de Computadores
+
 ## Trabalho Final
 
 Este repositório foi criado para o desenvolvimento de ambientes virtuais de conversação com uso system call select() como conclusão da disciplina de FRC.
@@ -15,13 +16,24 @@ O roteiro utilizado pode ser encontrado clicando aqui [Roteiro](/FRC_PROJ_PESQUI
 
 ## Como executar o trabalho
 
+### Execução do trabalho final
+Terminal Servidor
+```python
+python3 chat_server.py
+```
+
+Terminal Cliente
+```python
+python3 chat_client.py
+```
+
+### Execução dos arquivos utilizados como inspiração
 Terminal Servidor
 ```python
 nc -l 1234
 ```
 
 Terminal Cliente
-Terminal Servidor
 ```python
 python3 client.py
 ```
