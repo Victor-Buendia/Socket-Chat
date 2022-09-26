@@ -18,7 +18,7 @@ O roteiro utilizado pode ser encontrado clicando aqui [Roteiro](/FRC_PROJ_PESQUI
 
 Para executar o trabalho, deve ser realizada a instalação do Python 3.10 ou superior.
 
-Comn o python instalado, executar o seguinte comando para rodar o servidor: 
+Com  o python instalado, executar o seguinte comando para rodar o servidor: 
 ```
 python3.10 chat_server.py
 ```
@@ -37,6 +37,7 @@ Para rodá-los:
 Terminal Servidor
 ```python
 nc -l 1234
+```
 
 Terminal Cliente
 ```python
