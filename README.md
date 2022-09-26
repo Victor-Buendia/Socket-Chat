@@ -16,22 +16,27 @@ O roteiro utilizado pode ser encontrado clicando aqui [Roteiro](/FRC_PROJ_PESQUI
 
 ## Como executar o trabalho
 
-### Execução do trabalho final
-Terminal Servidor
-```python
-python3 chat_server.py
+Para executar o trabalho, deve ser realizada a instalação do Python 3.10 ou superior.
+
+Comn o python instalado, executar o seguinte comando para rodar o servidor: 
+```
+python3.10 chat_server.py
 ```
 
-Terminal Cliente
-```python
-python3 chat_client.py
+Com servidor rodando, executar o comando abaixo para rodar o cliente:
+```
+python3.10 chat_client.py
 ```
 
-### Execução dos arquivos utilizados como inspiração
+### Inspiração
+
+Os arquivos client.py e server.py são arquivos utilizados para estudo durante o desenvolvimento do trabalho. 
+
+Para rodá-los:
+
 Terminal Servidor
 ```python
 nc -l 1234
-```
 
 Terminal Cliente
 ```python
