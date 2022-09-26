@@ -117,7 +117,7 @@ def delete_room():
     show_rooms()
     room_to_be_removed = None
 
-    id_room_to_be_removed = input('Selecione o id da sala a ser removida:')
+    id_room_to_be_removed = input('Selecione o id da sala a ser removida: ')
     for room in rooms:
         if room['id'] == int(id_room_to_be_removed):
             room_to_be_removed = room
@@ -281,6 +281,10 @@ def remove_users_from_room(room):
     for user in room['users']:
         data = {'username': 'Sistema',
                 'message': '*** ESTA SALA FOI ENCERRADA ***'}
+        encoded_data = json.dumps(data).encode('utf-8')
+        user['socket'].send(encoded_data)
+
+        data = {'username': 'Sistema', 'message': '201'}
         encoded_data = json.dumps(data).encode('utf-8')
         user['socket'].send(encoded_data)
 
