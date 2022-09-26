@@ -15,13 +15,16 @@ O roteiro utilizado pode ser encontrado clicando aqui [Roteiro](/FRC_PROJ_PESQUI
 
 ## Como executar o trabalho
 
-Terminal Servidor
-```python
-nc -l 1234
+Para executar o trabalho devemos primeiro ter o Python instalado na versão 3.10
+
+Comn o python instalado executamos o seguinte comando: 
+```
+python3.10 chat_server.py
 ```
 
-Terminal Cliente
-Terminal Servidor
-```python
-python3 client.py
+Realizando este comando compilamos o código do servidor, em seguida devemos executar o comando para compilar agora o código do cliente
 ```
+python3.10 chat_client.py
+```
+
+Agora a aplicação está funcionando corretamente, basta seguir as instruções para uso tanto no terminal que excutou o cliente quanto o servidor! :^D

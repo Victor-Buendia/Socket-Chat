@@ -16,7 +16,7 @@ comandos = {
     "/PARTICIPANTES": "Listar participantes de uma determinada sala.",
     "/ENCERRAR": "Encerrar uma sala.",
     "/SAIR": "Encerrar a aplicação.",
-    "/LOGS": "Exibir logs"
+    "/LOGS": "Exibir logs."
 }
 
 logs = []
