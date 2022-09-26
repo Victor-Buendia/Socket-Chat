@@ -46,7 +46,7 @@ def init():
     # Conecta em um ip e porta dados
     client_socket.connect((IP, PORT))
 
-    # Seta a conexão para não-blocante, para que o recv() não bloqueie, só retorne algum erro que trataremos adiante
+    # Seta a conexão para não-bloqueante, para que o recv() não bloqueie, só retorne algum erro que trataremos adiante
     client_socket.setblocking(False)
 
     # Prepara o username do participante e manda ele
