@@ -133,6 +133,19 @@ def delete_room():
     else:
         print('Sala não encontrada.')
 
+def delete_all_rooms():
+    for room in rooms:
+        for user in room["users"]:
+            data = {'username': 'Sistema',
+                    'message': '*** ESTA SALA FOI ENCERRADA ***'}
+            encoded_data = json.dumps(data).encode('utf-8')
+            user['socket'].send(encoded_data)
+            data = {'username': 'Sistema', 'message': '200'}
+            encoded_data = json.dumps(data).encode('utf-8')
+            user['socket'].send(encoded_data)
+            user['socket'].shutdown(socket.SHUT_RDWR)
+            user['socket'].close()
+
 
 def init():
     threading.Thread(target=manage_sockets).start()
@@ -163,6 +176,7 @@ def init():
 
             case '/SAIR':
                 print('\nEncerrando aplicação...')
+                delete_all_rooms()
                 os._exit(1)
 
             case _:

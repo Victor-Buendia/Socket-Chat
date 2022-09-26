@@ -86,6 +86,9 @@ def init():
                                 time.sleep(3)
                                 clear()
                                 init()
+                            case '200':
+                                time.sleep(1)
+                                os._exit(1)
                     sys.stdout.flush()
                     print('\033[A \033[A')
                     print(f'\n{message["username"]} > {message["message"]}')
