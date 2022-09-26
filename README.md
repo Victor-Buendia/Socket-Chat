@@ -30,9 +30,7 @@ python3.10 chat_client.py
 
 ### Inspiração
 
-Os arquivos client.py e server.py são arquivos utilizados para estudo durante o desenvolvimento do trabalho. 
-
-Para rodá-los:
+Os arquivos client.py e server.py são arquivos utilizados para estudo durante o desenvolvimento do trabalho. Para rodá-los:
 
 Terminal Servidor
 ```python
